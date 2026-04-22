@@ -1,16 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>vant</title>
-    <!-- 关键：禁止搜索引擎收录 -->
-    <meta name="robots" content="noindex, nofollow">
-    <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #f4f4f4; }
-        h1 { color: #333; }
-    </style>
+    <title>together | Industrial Glassware Manufacturer</title>
+    <meta name="description"
+        content="together is a premium borosilicate glassware factory specializing in industrial molding, kitchenware, and custom glass engineering.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="Corporate-Footer-Clean.css">
 </head>
+
 <body>
-    <img src="vant_logo.png" alt="sourcevant.com">
+    <nav id="nav-placeholder"></nav>
+    
+    <section class="section-hero">
+        <h1>The Science of Glass.</h1>
+        <p>Premium borosilicate manufacturing for global industrial needs.</p><a href="products.html"
+            class="btn-outline" style="margin-top:30px;">Products</a>
+    </section>
+    <section class="section-content">
+        <div class="grid-2">
+            <div>
+                <h2>Engineering Precision</h2>
+                <p>15 years of technical expertise in glass annealing and molding. We don't just supply products; we
+                    provide engineering solutions.</p>
+            </div>
+            <div style="background:#eee; height:300px; display:flex; align-items:center; justify-content:center;">
+                [Image: Glassware Process]</div>
+        </div>
+    </section>
+    <div id="footer-placeholder"></div>
+    
+    <script>
+        // 加载导航
+        fetch('nav.html')
+            .then(response => response.text())
+            .then(data => document.getElementById('nav-placeholder').innerHTML = data);
+
+        // 加载页脚
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => document.getElementById('footer-placeholder').innerHTML = data);
+    </script>
 </body>
+
 </html>

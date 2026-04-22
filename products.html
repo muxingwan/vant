@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="Corporate-Footer-Clean.css">
+    <title>Products | together</title>
+</head>
+
+<body>
+    
+    <nav id="nav-placeholder"></nav>
+    <section class="section-content">
+        <h1>Products</h1>
+        <div class="grid-4" style="margin-top:50px;">
+            <div class="card-item">
+                <h3>Bottles</h3>
+                <p>Borosilicate series</p><a href="#">Download TDS</a>
+            </div>
+            <div class="card-item">
+                <h3>Drinkware</h3>
+                <p>Heat resistant</p><a href="#">Download TDS</a>
+            </div>
+            <div class="card-item">
+                <h3>Jars</h3>
+                <p>Airtight storage</p><a href="#">Download TDS</a>
+            </div>
+            <div class="card-item">
+                <h3>Molds</h3>
+                <p>ODM Support</p><a href="contact.html">Inquire</a>
+            </div>
+        </div>
+    </section>
+    <div id="footer-placeholder"></div>
+
+    <script>
+        // 加载导航
+        fetch('nav.html')
+            .then(response => response.text())
+            .then(data => document.getElementById('nav-placeholder').innerHTML = data);
+
+        // 加载页脚
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => document.getElementById('footer-placeholder').innerHTML = data);
+    </script>
+</body>
+
+</html>

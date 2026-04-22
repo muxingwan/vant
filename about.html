@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="Corporate-Footer-Clean.css">
+    <title>Factory | together</title>
+</head>
+
+<body>
+
+    <nav id="nav-placeholder"></nav>
+    <section class="section-hero">
+        <h1>Our Foundry.</h1>
+        <p>Commitment to structural integrity and rigorous standards.</p>
+    </section>
+    <section class="section-content">
+        <div style="max-width:800px; margin:0 auto; text-align:center;">
+            <h2>Technical Integrity</h2>
+            <p>Operating a dedicated facility in Qingdao, together focuses on high-thermal shock resistance. Our
+                workflow is centered on OEM technical specifications and long-term industrial reliability.</p>
+        </div>
+    </section>
+    <div id="footer-placeholder"></div>
+
+    <script>
+        // 加载导航
+        fetch('nav.html')
+            .then(response => response.text())
+            .then(data => document.getElementById('nav-placeholder').innerHTML = data);
+
+        // 加载页脚
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => document.getElementById('footer-placeholder').innerHTML = data);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="Corporate-Footer-Clean.css">
+
+
+    <title>Contact | together</title>
+</head>
+
+<body>
+    <nav id="nav-placeholder"></nav>
+
+    <section class="section-content" style="max-width:900px; margin:0 auto;">
+        <h1>Inquiry</h1>
+        <form action="https://formspree.io/f/mgodoppn" class="fs-form fs-layout__2-column" target="_top" method="POST">
+            <div class="fs-field">
+                <label class="fs-label" for="request-type">Type of Request</label>
+                <select class="fs-select" id="request-type" name="request-type" required>
+                    <option value="product-inquiry">Product Inquiry</option>
+                    <option value="purchase-request">Purchase Request</option>
+                    <option value="general-inquiry">General Inquiry</option>
+                </select>
+            </div>
+            <div class="fs-field">
+                <label class="fs-label" for="country">Country</label>
+                <input class="fs-input" id="country" name="country"  />
+            </div>
+            <div class="fs-field">
+                <label class="fs-label" for="name"><span style="color: red;">*</span>Name</label>
+                <input class="fs-input" id="name" name="name" required />
+            </div>
+            <div class="fs-field">
+                <label class="fs-label" for="company">Company</label>
+                <input class="fs-input" id="company" name="company"  />
+            </div>
+            <div class="fs-field">
+                <label class="fs-label" for="phone-number"><span style="color: red;">*</span>Phone Number</label>
+                <input class="fs-input" id="phone-number" name="phone-number"  required />
+            </div>
+            <div class="fs-field">
+                <label class="fs-label" for="email"><span style="color: red;">*</span>Email</label>
+                <input class="fs-input" id="email" name="email" required />
+            </div>
+            <div class="fs-field col-span-full">
+                <label class="fs-label" for="message"><span style="color: red;">*</span>Your Message</label>
+                <textarea class="fs-textarea" id="message" name="message" required></textarea>
+            </div>
+            <div class="fs-checkbox-field col-span-full">
+                <div class="fs-checkbox-wrapper">
+                    <input aria-describedby="dpa-consent-description" class="fs-checkbox" id="dpa-consent"
+                        name="dpa-consent" required type="checkbox" value="consent" checked/>
+                </div>
+                <div>
+                    <label class="fs-label" for="dpa-consent">
+                        Declaration of consent for data processing
+                    </label>
+                    <p class="fs-description" id="dpa-consent-description">
+                        You agree that your data from the form will be collected and processed
+                        to answer your request. You can revoke your consent at any time for the
+                        future by e-mail to info@toggroup.com.cn. Detailed information on the
+                        handling of user data can be found in our data protection declaration.
+                    </p>
+                </div>
+            </div>
+            <div class="fs-button-group">
+                <button class="fs-button" type="submit">Submit</button>
+            </div>
+        </form>
+    </section>
+
+
+
+    <div id="footer-placeholder"></div>
+
+    <script>
+        // 加载导航
+        fetch('nav.html')
+            .then(response => response.text())
+            .then(data => document.getElementById('nav-placeholder').innerHTML = data);
+
+        // 加载页脚
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => document.getElementById('footer-placeholder').innerHTML = data);
+    </script>
+</body>
+
+</html>
