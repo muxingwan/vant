@@ -1,4 +1,73 @@
+<!DOCTYPE html>
+<html>
 <head>
   <meta charset="utf-8">
-  <script src="grist-api.js"></script> 
+  <script src="https://docs.getgrist.com/grist-api.js"></script>
+  <style>
+    body { font-family: sans-serif; padding: 10px; background: #2ecc71; color: white; text-align: center; }
+    #btn { 
+      width: 100%; height: 60px; background: #27ae60; color: white; 
+      border: 2px solid white; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer;
+    }
+    #status { margin-top: 10px; font-size: 12px; background: rgba(0,0,0,0.1); padding: 5px; }
+  </style>
 </head>
+<body>
+
+  <button id="btn">🚀 同步到单机 Grist</button>
+  <div id="status">📡 正在尝试连接 Felix 的本地数据库...</div>
+
+  <script>
+    // 1. 初始化握手
+    grist.ready({
+      requiredAccess: 'full', // 申请最高权限
+      onEditOptions: function() { console.log("Options clicked"); }
+    });
+
+    // 2. 监听行选中
+    grist.onRecord(async (record) => {
+      document.getElementById('status').innerText = "✅ 已连接到当前行: " + (record.Company_Name || "未命名公司");
+      
+      document.getElementById('btn').onclick = async () => {
+        if (!record.Raw_Input) {
+          alert("Raw_Input 是空的，没法同步数据！");
+          return;
+        }
+
+        try {
+          document.getElementById('status').innerText = "⏳ 正在写入...";
+          const parts = record.Raw_Input.split('\t').map(p => p.trim());
+          while (parts.length < 13) parts.push("");
+
+          // 核心更新指令
+          const actions = [
+            ['UpdateRecord', 'Companies', record.id, {
+              Country: parts[11],
+              Business: parts[12],
+              Company_Name: record.Company_Name || parts[0]
+            }]
+          ];
+
+          const contactMap = {1:"Website", 2:"Email", 3:"Phone", 4:"WhatsApp", 5:"LinkedIn", 6:"Facebook", 7:"Instagram", 8:"Telegram", 9:"TikTok"};
+          for (let idx in contactMap) {
+            let val = parts[idx];
+            if (val && !["n/a", "/", "-", "none"].includes(val.toLowerCase())) {
+              let subVals = val.replace(/\//g, ' ').split(/\s+/).filter(v => v);
+              subVals.forEach(sv => {
+                actions.push(['AddRecord', 'Contacts', null, {
+                  Company_Link: record.id, Type: contactMap[idx], Value: sv
+                }]);
+              });
+            }
+          }
+
+          await grist.docApi.applyUserActions(actions);
+          document.getElementById('status').innerText = "⭐ 同步成功！";
+        } catch (e) {
+          document.getElementById('status').innerText = "❌ 报错：" + e.message;
+        }
+      };
+    });
+  </script>
+</body>
+</html>
