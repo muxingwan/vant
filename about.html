@@ -12,10 +12,17 @@
 <body>
 
     <nav id="nav-placeholder"></nav>
-    <section class="section-hero">
+    <section class="section-factory">
+        <div class="carousel-bg">
+            <div class="carousel-slide active" style="background-image: url('assets/images/Factory24.278.jpg');"></div>
+            <div class="carousel-slide" style="background-image: url('assets/images/Factory52.716.jpg');"></div>
+            <div class="carousel-slide" style="background-image: url('assets/images/Factory50.740.jpg');"></div>
+            <div class="carousel-slide" style="background-image: url('assets/images/Factory01.894.jpg');"></div>
+        </div>
         <h1>Our Foundry.</h1>
         <p>Commitment to structural integrity and rigorous standards.</p>
     </section>
+
     <section class="section-content">
         <div style="max-width:800px; margin:0 auto; text-align:center;">
             <h2>Technical Integrity</h2>
@@ -36,6 +43,27 @@
             .then(response => response.text())
             .then(data => document.getElementById('footer-placeholder').innerHTML = data);
     </script>
+        <script>
+            // 只对 section-factory 的背景做轮播
+            // 获取轮播容器内的所有背景项（只作用于 .section-factory 内）
+            const slides = document.querySelectorAll('.section-factory .carousel-slide');
+            let currentIndex = 0;
+    
+            // 轮播函数
+            function rotateBackground() {
+                // 移除当前激活的类
+                slides[currentIndex].classList.remove('active');
+                
+                // 计算下一个索引
+                currentIndex = (currentIndex + 1) % slides.length;
+                
+                // 添加激活类到下一张
+                slides[currentIndex].classList.add('active');
+            }
+    
+            // 每 5 秒切换一次背景（只有轮播容器中的背景会切换）
+            setInterval(rotateBackground, 5000);
+        </script>
 </body>
 
 </html>

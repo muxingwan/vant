@@ -401,3 +401,93 @@ fieldset {
   text-align: center;
   white-space: nowrap;
 }
+
+        /* ========== section-factory 轮播样式 ========== */
+        .section-factory {
+          position: relative;
+          min-height: 70vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          color: white;
+          overflow: hidden;
+      }
+
+      /* 轮播背景容器 */
+      .carousel-bg {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 0;
+      }
+
+      /* 单个背景图 */
+      .carousel-slide {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          opacity: 0;
+          transition: opacity 1s ease-in-out;
+      }
+
+      /* 当前激活的背景图 */
+      .carousel-slide.active {
+          opacity: 1;
+      }
+
+      /* 可选：添加暗色叠加层让文字更清晰 */
+      .carousel-bg::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.4);
+          z-index: 1;
+      }
+
+      /* 文字内容，确保在背景之上 */
+      .section-factory h1,
+      .section-factory p {
+          position: relative;
+          z-index: 2;
+      }
+
+      .section-factory h1 {
+          font-size: 4rem;
+          margin-bottom: 20px;
+          text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+      }
+
+      .section-factory p {
+          font-size: 1.5rem;
+          text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+      }
+
+      /* ========== section-content 普通样式（不受轮播影响） ========== */
+      .section-content {
+          padding: 80px 20px;
+          background-color: #f5f5f5;
+      }
+
+      .section-content h2 {
+          font-size: 2.5rem;
+          margin-bottom: 20px;
+          color: #333;
+      }
+
+      .section-content p {
+          font-size: 1.1rem;
+          line-height: 1.6;
+          color: #666;
+      }
