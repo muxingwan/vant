@@ -14,12 +14,18 @@
 
 <body>
     <nav id="nav-placeholder"></nav>
-    
-    <section class="section-hero">
-        <h1>The Science of Glass.</h1>
-        <p>Premium borosilicate manufacturing for global industrial needs.</p><a href="products.html"
-            class="btn-outline" style="margin-top:30px;">Products</a>
-    </section>
+    <div class="container">
+        <!-- <section class="section-hero">
+            <h1>The Science of Glass.</h1>
+            <p>Premium borosilicate manufacturing for global industrial needs.</p><a href="products.html"
+                class="btn-outline" style="margin-top:30px;">Products</a>
+        </section> -->
+        <div class="flex-row">
+            <div class="flex-col"><img src="assets/images/p1-1.jpg" alt=""></div>
+            <div class="flex-col"><img src="assets/images/p2-1.jpg" alt=""></div>
+            <div class="flex-col"><img src="assets/images/p3-1.jpg" alt=""></div>
+        </div>
+    </div>
     <section class="section-content">
         <div class="grid-2">
             <div>
@@ -28,11 +34,11 @@
                     provide engineering solutions.</p>
             </div>
             <div style="background:#eee; height:300px; display:flex; align-items:center; justify-content:center;">
-                [Image: Glassware Process]</div>
+                <img src="assets/images/p4-1.jpg" alt=""></div>
         </div>
     </section>
     <div id="footer-placeholder"></div>
-    
+
     <script>
         // 加载导航
         fetch('nav.html')
