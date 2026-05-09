@@ -765,7 +765,7 @@ fieldset {
       .head_nav li li a em{display: inline-block;width: 100%;}
       
       .head_nav li ul{position:absolute;left:0;top:100%;width:250px;padding:10px 0;z-index:999;transform:scale3d(0.9, 0.9, 1);opacity:0;visibility:hidden;box-sizing:content-box; background:var(--color-2);}
-      .head_nav li li ul{top:-10px;left:102%;}
+      .head_nav li li ul{top:-10px;left:100%;}
       
       .head_nav li li a{line-height:1.8;padding:6px 15px;color:#FFF;}
       .head_nav li li a i{position:absolute;right:15px;top:5px;font-size:14px;}
