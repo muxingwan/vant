@@ -1,6 +1,31 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400&family=Playfair+Display:ital,wght@0,600;1,400&display=swap');
 
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+/** Variables **/
+
 :root {
+  --color-1:#FF6242;
+  --color-2:#FF8142;
+  --color-3:#ed8063;
+  --color-4:#FFB042;
+  --color-5:#FFD642;
+  --color-6:#cbf4c3;
+  --color-7:#EFD6C4;
+
+  --color-background: #cbd5e1;
+  --color-background-alt: #3a9092;
+  --color-border-active: #23494c;
+  --color-border-default: #EFD6C4;
+  --color-highlight: #7ecac7;
+  --color-primary: #ed8063;
+  --color-primary-active: #6bcba4;
+  --color-text-default: #0f172a;
+  --color-text-muted: #475569;
+
+  --font-family-body: "Inter", sans-serif;
+
+  
   --bg: #ffffff;
   --text: #1a1a1a;
   --accent: #003366;
@@ -119,23 +144,6 @@ h2 {
 
 
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
-
-/** Variables **/
-
-:root {
-  --color-background: #cbd5e1;
-  --color-background-alt: #3a9092;
-  --color-border-active: #23494c;
-  --color-border-default: #94a3b8;
-  --color-highlight: #7ecac7;
-  --color-primary: #23494c;
-  --color-primary-active: #122d30;
-  --color-text-default: #0f172a;
-  --color-text-muted: #475569;
-
-  --font-family-body: "Inter", sans-serif;
-}
 
 /** Base **/
 
@@ -623,9 +631,6 @@ fieldset {
 
 .wp{width:75%; margin:0 auto; position:relative;}
 
-.nav-links{
-  display:;
-}
 
       .nav-links > a,
       .dropdown {
@@ -759,7 +764,7 @@ fieldset {
       
       .head_nav li li a em{display: inline-block;width: 100%;}
       
-      .head_nav li ul{position:absolute;left:0;top:100%;width:250px;padding:10px 0;z-index:999;background-color:#fff;transform:scale3d(0.9, 0.9, 1);opacity:0;visibility:hidden;box-sizing:content-box; background:#ee9422;}
+      .head_nav li ul{position:absolute;left:0;top:100%;width:250px;padding:10px 0;z-index:999;transform:scale3d(0.9, 0.9, 1);opacity:0;visibility:hidden;box-sizing:content-box; background:var(--color-2);}
       .head_nav li li ul{top:-10px;left:102%;}
       
       .head_nav li li a{line-height:1.8;padding:6px 15px;color:#FFF;}
@@ -771,7 +776,7 @@ fieldset {
       .head_nav li.active > a, .head_nav li:hover > a {   }
       
       .head_nav > li:hover > a > i{-ms-transform:rotate(180deg);transform: rotate(180deg);}
-      .head_nav > li.active > a{color:#ee9422;}
+
 
       .head_nav li{padding:0 13px;font-size:12px;}
       em {
