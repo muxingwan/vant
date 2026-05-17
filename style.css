@@ -5,13 +5,23 @@
 /** Variables **/
 
 :root {
-  --color-1:#FF6242;
-  --color-2:#FF8142;
-  --color-3:#ed8063;
-  --color-4:#FFB042;
+  --color-11:#FF6242;
+  --color-21:#FF8142;
+  --color-31:#ed8063;
+  --color-41:#FFB042;
+  --color-51:#FFD642;
+  --color-61:#cbf4c3;
+  --color-71:#EFD6C4;
+
+  --color-1:#83020e;
+  --color-2:#aa0a0f;
+  --color-3:#ee3b66;
+  --color-4:#fd7293;
   --color-5:#FFD642;
-  --color-6:#cbf4c3;
-  --color-7:#EFD6C4;
+  --color-6:#abad2c;
+  --color-7:#dca335;
+  --color-8:#7a7a7a;
+  --color-9:#b6b5b5;
 
   --color-background: #cbd5e1;
   --color-background-alt: #3a9092;
@@ -764,7 +774,12 @@ fieldset {
       
       .head_nav li li a em{display: inline-block;width: 100%;}
       
-      .head_nav li ul{position:absolute;left:0;top:100%;width:250px;padding:10px 0;z-index:999;transform:scale3d(0.9, 0.9, 1);opacity:0;visibility:hidden;box-sizing:content-box; background:var(--color-2);}
+      .head_nav li ul{
+        position:absolute;left:0;top:100%;width:250px;
+        padding:10px 0;z-index:999;transform:scale3d(0.9, 0.9, 1);
+        opacity:0;visibility:hidden;box-sizing:content-box; 
+        background:var(--color-3);
+      }
       .head_nav li li ul{top:-10px;left:100%;}
       
       .head_nav li li a{line-height:1.8;padding:6px 15px;color:#FFF;}
@@ -778,11 +793,20 @@ fieldset {
       .head_nav > li:hover > a > i{-ms-transform:rotate(180deg);transform: rotate(180deg);}
 
 
-      .head_nav li{padding:0 13px;font-size:12px;}
+      .head_nav li{
+        padding:0 13px;
+        font-size:16px;
+      }
       em {
         font-style: normal;
       }
 
       a {
-        color: #000;
+        color: var(--color-1);
+        text-decoration: none;
       }
+      a:hover {
+        color: var(--color-6);
+        text-decoration: none;
+      }
+

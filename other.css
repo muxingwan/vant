@@ -60,7 +60,7 @@
     align-items: center;
     justify-content: center;
   }
-  .product-cate .img-list ul li :hover{background-color: #e1b876;}
+  .product-cate .img-list ul li :hover{background-color: var(--color-4);}
   .product-cate .img-list ul li a {
     display: block;
     margin-top: 40px;
