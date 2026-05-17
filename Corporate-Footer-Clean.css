@@ -11,7 +11,7 @@
 }
 
 .page-footer p {
-  color: #888;
+  color: var(--color-9);
   font-size: 11px;
 }
 
@@ -30,6 +30,12 @@
 .page-footer .footer-links li {
   margin-bottom: 5px;
   line-height: 1.3;
+}
+
+.page-footer .SocialMedia{
+  margin-bottom: 5px;
+  line-height: 1.3;
+  text-align: center;
 }
 
 .page-footer .footer-legal .copyright {
