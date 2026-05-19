@@ -1,84 +1,467 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <link rel="stylesheet" href="bootstrap.min.css">
     <link rel="stylesheet" href="swiper5.css">
     <link rel="stylesheet" href="Corporate-Footer-Clean.css">
     <link rel="stylesheet" href="iconfont.css">
     <link rel="stylesheet" href="other.css">
     <link rel="stylesheet" href="style.css">
-
-
-    <title>Contact | together</title>
-</head>
-
-<body>
-    <nav id="nav-placeholder"></nav>
-
-    <section class="section-content" style="max-width:900px; margin:0 auto;">
-        <h1>Inquiry</h1>
-        <form action="https://formspree.io/f/mgodoppn" class="fs-form fs-layout__2-column" target="_top" method="POST">
-            <div class="fs-field">
-                <label class="fs-label" for="request-type">Type of Request</label>
-                <select class="fs-select" id="request-type" name="request-type" required>
-                    <option value="product-inquiry">Product Inquiry</option>
-                    <option value="purchase-request">Purchase Request</option>
-                    <option value="general-inquiry">General Inquiry</option>
-                </select>
-            </div>
-            <div class="fs-field">
-                <label class="fs-label" for="country">Country</label>
-                <input class="fs-input" id="country" name="country"  />
-            </div>
-            <div class="fs-field">
-                <label class="fs-label" for="name"><span style="color: red;">*</span>Name</label>
-                <input class="fs-input" id="name" name="name" required />
-            </div>
-            <div class="fs-field">
-                <label class="fs-label" for="company">Company</label>
-                <input class="fs-input" id="company" name="company"  />
-            </div>
-            <div class="fs-field">
-                <label class="fs-label" for="phone-number"><span style="color: red;">*</span>Phone Number</label>
-                <input class="fs-input" id="phone-number" name="phone-number"  required />
-            </div>
-            <div class="fs-field">
-                <label class="fs-label" for="email"><span style="color: red;">*</span>Email</label>
-                <input class="fs-input" id="email" name="email" required />
-            </div>
-            <div class="fs-field col-span-full">
-                <label class="fs-label" for="message"><span style="color: red;">*</span>Your Message</label>
-                <textarea class="fs-textarea" id="message" name="message" required></textarea>
-            </div>
-            <div class="fs-checkbox-field col-span-full">
-                <div class="fs-checkbox-wrapper">
-                    <input aria-describedby="dpa-consent-description" class="fs-checkbox" id="dpa-consent"
-                        name="dpa-consent" required type="checkbox" value="consent" checked/>
-                </div>
-                <div>
-                    <label class="fs-label" for="dpa-consent">
-                        Declaration of consent for data processing
-                    </label>
-                    <p class="fs-description" id="dpa-consent-description">
-                        You agree that your data from the form will be collected and processed
-                        to answer your request. You can revoke your consent at any time for the
-                        future by e-mail to info@toggroup.com.cn. Detailed information on the
-                        handling of user data can be found in our data protection declaration.
+    <title>Contact us | together</title>
+    <style>
+        /* ========== Hero 区域 ========== */
+        .contact-hero {
+            padding: 3rem 0 2rem 0;
+            background: #ffffff;
+        }
+    
+        .hero-sub {
+            font-size: 1.1rem;
+            color: #4a5b68;
+            max-width: 680px;
+            border-left: 4px solid #8fc1b0;
+            padding-left: 1rem;
+            margin-top: 0.5rem;
+        }
+    
+        /* ========== 联系信息网格布局 ========== */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin: 3rem 0 2rem;
+        }
+    
+        /* ========== 卡片样式 ========== */
+        .info-card {
+            background: #ffffff;
+            border-radius: 28px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.02);
+            padding: 2rem 1.8rem;
+            transition: all 0.2s ease;
+        }
+    
+        .full-width-card {
+            grid-column: span 2;
+            margin: 1rem 0 2rem 0;
+        }
+    
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-left: 5px solid var(--color-3);
+            padding-left: 1rem;
+        }
+    
+        .contact-detail-item {
+            margin-bottom: 1.75rem;
+        }
+    
+        .contact-label {
+            font-weight: 600;
+            color: var(--color-4);
+            display: block;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.3rem;
+        }
+    
+        .contact-value {
+            font-size: 1.05rem;
+            color: #1f2c38;
+            word-break: break-word;
+            line-height: 1.4;
+        }
+    
+    
+        .contact-value a:hover {
+            color: #1d4f43;
+            border-bottom-color: #1d4f43;
+        }
+    
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, #e2e0db, transparent);
+            margin: 1.5rem 0;
+        }
+    
+        .badge-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0 0;
+        }
+    
+        .badge {
+            background: #f0f4f2;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            color: #2f6759;
+            font-weight: 500;
+        }
+    
+        .map-placeholder {
+            background: var(--bg-light-4);
+            border-radius: 24px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            text-align: center;
+            font-size: 0.85rem;
+            border: 1px solid var(--color-4);
+        }
+    
+        /* ========== 工厂区域样式 ========== */
+        .factory-highlight {
+            background: #f6f8f5;
+            border-radius: 24px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            border: 1px solid #e7e5df;
+        }
+    
+        /* ========== 服务网格 ========== */
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+    
+        .service-item {
+            border-radius: 20px;
+            padding: 0.8rem;
+            text-align: center;
+            font-size: 0.9rem;  
+            border: 1px solid var(--color-4);
+            border-radius: 24px;
+        }
+    
+        /* ========== 顶部专家区 ========== */
+        .expert-box {
+            background: var(--bg-light-7);
+            border-radius: 28px;
+            padding: 1.5rem;
+            text-align: center;
+            margin: 1.8rem 0 0.5rem;
+        }
+    
+        .expert-box p {
+            padding: 1.5rem;
+            text-align: left;
+            margin: 1.8rem 0 0.5rem;
+        }
+    
+        /* ========== 全宽卡片内部布局 ========== */
+        .priority-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: space-between;
+            align-items: center;
+        }
+    
+        .priority-content {
+            flex: 2;
+            min-width: 220px;
+        }
+    
+        .priority-content p {
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+    
+        .priority-content .check-list {
+            margin-bottom: 0.5rem;
+        }
+    
+        .priority-badge {
+            text-align: center;
+        }
+    
+        .priority-badge > div:first-child {
+            font-size: 2rem;
+        }
+    
+        .priority-badge .badge-title {
+            font-weight: 500;
+            margin-top: 0.3rem;
+        }
+    
+        .priority-badge .badge-sub {
+            font-size: 0.8rem;
+            color: #5b7c6f;
+        }
+    
+        /* ========== 底部三个服务卡片 ========== */
+        .service-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: space-between;
+            margin: 2rem 0 1rem;
+        }
+    
+        .service-card-item {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 1.2rem 1.5rem;
+            flex: 1;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+            border: 1px solid #ece8e2;
+        }
+    
+        .service-card-item .card-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #2d5f6e;
+        }
+    
+        .service-card-item .phone-link {
+            margin-top: 0.5rem;
+        }
+    
+        .service-card-item .phone-link a {
+            color: #1f5e50;
+            text-decoration: none;
+            font-weight: 500;
+        }
+    
+        .service-card-item .sub-text {
+            font-size: 0.85rem;
+            color: #6f7e8a;
+            margin-top: 6px;
+        }
+    
+        .service-card-item .email-link {
+            margin-top: 0.5rem;
+        }
+    
+        .service-card-item .email-link a {
+            color: #1f5e50;
+            text-decoration: none;
+        }
+    
+        .service-card-item .cooperation-desc {
+            font-size: 0.95rem;
+            margin-top: 0.3rem;
+        }
+    
+        .service-card-item .cooperation-sub {
+            font-size: 0.8rem;
+            color: #4f6b62;
+        }
+    
+        /* ========== 双枢纽地理优势 ========== */
+        .location-box {
+            border-radius: 28px;
+            padding: 1.5rem;
+            text-align: center;
+            margin: 1.8rem 0 0.5rem;
+        }
+    
+        .location-box .location-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+    
+        .location-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            font-size: 0.9rem;
+            padding-bottom: 8px;
+        }
+    
+        .location-desc {
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            color: #628173;
+        }
+    
+        /* ========== 响应式 ========== */
+        @media (max-width: 800px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+    
+            .full-width-card {
+                grid-column: span 1;
+            }
+    
+            .hero-title {
+                font-size: 1.9rem;
+            }
+    
+            .nav-links a {
+                margin-left: 1rem;
+                font-size: 0.9rem;
+            }
+        }
+    
+        @media (max-width: 480px) {
+            .nav-flex {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: flex-start;
+            }
+    
+            .nav-links {
+                margin-top: 0.5rem;
+            }
+    
+            .nav-links a {
+                margin-left: 0;
+                margin-right: 1.2rem;
+            }
+    
+            .container {
+                padding: 0 20px;
+            }
+        }
+    </style>
+    </head>
+    
+    <body>
+    
+        <!-- 导航栏 -->
+        <nav id="nav-placeholder"></nav>
+    
+        <main>
+            <div class="container">
+                <!-- 顶部专家区 -->
+                <div class="expert-box">
+                    <h2>Connect with our glassware experts</h2>
+                    <p>
+                        We specialize in premium glassware—from versatile bottles to elegant glasses, customizable to your needs.<br>
+                        Whether you have questions about products, want to discuss bulk orders, explore custom designs, or
+                        seek business collaborations, our team is here to help.
                     </p>
                 </div>
+    
+                <!-- 主要双列信息布局，无表单 -->
+                <div class="contact-grid">
+                    <!-- 左侧：青岛办公室 & 联系详情 -->
+                    <div class="info-card">
+                        <div class="section-title">
+                            📍 Qingdao Office
+                        </div>
+                        <div class="contact-detail-item">
+                            <span class="contact-label">COMPANY</span>
+                            <div class="contact-value">TOGETHER (QINGDAO) COMMODITIES TRD. CO., LTD</div>
+                        </div>
+                        <div class="contact-detail-item">
+                            <span class="contact-label">🏢 ADDRESS</span>
+                            <div class="contact-value">RM801, 8th Floor, Yunfeng Center, 7th Ganquan Rd, Licang District,
+                                Qingdao, China</div>
+                        </div>
+                        <div class="contact-detail-item">
+                            <span class="contact-label">📧 EMAIL</span>
+                            <div class="contact-value"><a href="mailto:info@toggroup.com.cn">info@toggroup.com.cn</a></div>
+                        </div>
+                        <div class="contact-detail-item">
+                            <span class="contact-label">📞 TEL / WhatsApp</span>
+                            <div class="contact-value"><a href="tel:+8613045067284">086-13045067284</a></div>
+                        </div>
+                        <div class="badge-row">
+                            <span class="map-placeholder">bulk export</span>
+                            <span class="map-placeholder">OEM/ODM</span>
+                            <span class="map-placeholder">worldwide shipping</span>
+                        </div>
+                    </div>
+    
+                    <!-- 右侧：工厂信息与定制能力 -->
+                    <div class="info-card">
+                        <div class="section-title">
+                            🏭 Zibo factory
+                        </div>
+                        <div class="contact-detail-item">
+                            <span class="contact-label">FACTORY ADDRESS</span>
+                            <div class="contact-value">X06 County Road (Zero Six County Road), Boshan District, Zibo City,
+                                Shandong Province, China</div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="contact-detail-item">
+                            <span class="contact-label">✨ build core capabilities</span>
+                            <div class="feature-list">
+                                <div class="feature-item">glass bottles & jars</div>
+                                <div class="feature-item">high-grade wine glasses</div>
+                                <div class="feature-item">borosilicate glass</div>
+                                <div class="feature-item">Support private mold customization</div>
+                            </div>
+                        </div>
+                        <div >
+                            <span class="map-placeholder">Quick Sampling</span>
+                            <span class="map-placeholder">Strict QC</span>
+                            <span class="map-placeholder">One-stop Glass Solutions</span>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- 第二行：合作与服务亮点（全宽卡片） -->
+                <div class="info-card full-width-card">
+                    <div class="section-title">
+                        💎 Your satisfaction is our priority
+                    </div>
+                    <div class="priority-wrapper">
+                        <div class="priority-content">
+                            <p>Whether you have questions about premium glassware, need bulk pricing, or want to explore exclusive custom designs — our team is just a call or email away.</p>
+                            <p>Your satisfaction is our priority. We look forward to connecting with you soon!</p>
+                            <p class="check-list">✓ Low MOQ support<br>✓ Professional Design Support & Sampling Service<br>✓ FDA / LFGB / EU<br>✓ On-time Delivery & Full Logistics Tracking</p>
+                        </div>
+                        <div class="map-placeholder priority-badge" style="margin-top: 0;">
+                            <div>🥂</div>
+                            <div class="badge-title">From design to container shipment</div>
+                            <div class="badge-sub">Crafting your vision in glass</div>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- 联系小贴士：突出快速响应与协作通道 -->
+                <div class="service-cards">
+                    <div class="service-card-item">
+                        <div class="card-title">📞 telephone inquiry</div>
+                        <div class=".contact-value"><a href="tel:+8613045067284">086-13045067284</a></div>
+                        <div class="sub-text">work day 9:00–18:00 (GMT+8)</div>
+                    </div>
+                    <div class="service-card-item">
+                        <div class="card-title">✉️ email contact</div>
+                        <div class=".contact-value"><a href="mailto:info@toggroup.com.cn">info@toggroup.com.cn</a></div>
+                        <div class="sub-text">24h Response | Professional Quotation Available</div>
+                    </div>
+                    <div class="service-card-item">
+                        <div class="card-title">🤝 business cooperation</div>
+                        <div class="cooperation-desc">OEM/ODM、Customized Brand Packing & Long-term Cooperation Strategy</div>
+                        <div class="cooperation-sub">Join hands with global partners to create win-win value</div>
+                    </div>
+                </div>
+    
+                <!-- 地图占位/地理位置说明 -->
+                <div class="location-box">
+                    <div class="location-tags">
+                        <span>🌊 Qingdao Office: Close to harbors for speedy export</span>
+                        <span>🏔️ Zibo Factory: Boshan, China’s Capital of Glass & Colored Glaze</span>
+                    </div>
+                        <img src="assets/images/map.jpg" width="1115px" >
+                </div>
+    
             </div>
-            <div class="fs-button-group">
-                <button class="fs-button" type="submit">Submit</button>
-            </div>
-        </form>
-    </section>
-
-
+        </main>
 
     <div id="footer-placeholder"></div>
 
+    <script type="text/javascript" src="assets/js/swiper5.js"></script>
+    <script type="text/javascript" src="assets/js/index.js"></script>
     <script>
         // 加载导航
         fetch('nav.html')
@@ -90,6 +473,14 @@
             .then(response => response.text())
             .then(data => document.getElementById('footer-placeholder').innerHTML = data);
     </script>
+    <script>
+        if (typeof Swiper !== 'undefined') {
+            console.log("✅ Swiper 已成功加载并执行！");
+        } else {
+            console.error("❌ Swiper 未定义，脚本可能没运行。");
+        }
+    </script>
+    <!-- 无任何表单，纯展示联系信息，符合要求 -->
 </body>
 
 </html>

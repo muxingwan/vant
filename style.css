@@ -16,12 +16,22 @@
   --color-1:#83020e;
   --color-2:#aa0a0f;
   --color-3:#ee3b66;
-  --color-4:#fa6a6a;
+  --color-4:#ff8a7a;
   --color-5:#FFD642;
   --color-6:#abad2c;
   --color-7:#dca335;
   --color-8:#7a7a7a;
   --color-9:#b6b5b5;
+
+  --bg-light-1: #fce8e8;   /* 极浅红（基于color-1） */
+  --bg-light-2: #fce4e6;   /* 极浅粉红（基于color-2） */
+  --bg-light-3: #fee9ef;   /* 极浅玫瑰（基于color-3） */
+  --bg-light-4: #fff0f0;   /* 极浅珊瑚（基于color-4） */
+  --bg-light-5: #fff8e0;   /* 极浅黄（基于color-5） */
+  --bg-light-6: #f2f4e0;   /* 极浅橄榄（基于color-6） */
+  --bg-light-7: #fdf2e4;   /* 极浅金（基于color-7） */
+
+  
 
   --color-background: #cbd5e1;
   --color-background-alt: #3a9092;
@@ -802,11 +812,11 @@ fieldset {
       }
 
       a {
-        color: var(--color-1);
+        color: var(--color-8);
         text-decoration: none;
       }
       a:hover {
-        color: var(--color-6);
+        color: var(--color-1);
         text-decoration: none;
       }
 
@@ -815,3 +825,36 @@ fieldset {
         color:var(--color-8);
         text-decoration:none
       }
+      
+
+      .feature-list {
+        margin-top: 24px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+    
+
+    .stat {
+      background: #f5f0e9;
+      border-radius: 60px;
+      padding: 10px 20px;
+      text-align: center;
+      font-weight: 600;
+  }
+  
+
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(44, 95, 45, 0.06);
+    padding: 8px 16px;
+    border-radius: 100px;
+}
+
+.feature-item::before {
+    content: "✓";
+    color: var(--color-primary);
+    font-weight: bold;
+}
