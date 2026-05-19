@@ -107,10 +107,6 @@
         }
 
         /* ========== 第一部分: 内容靠右，左侧留白放图片 & 标题 ========= */
-        .section-hero {
-            padding: 80px 0 60px;
-            position: relative;
-        }
 
         .split-layout {
             display: flex;
@@ -212,9 +208,8 @@
 
         /* ========== 第二部分: 内容靠左，右边放图片和标题 ========= */
         .section-reverse {
-            padding: 70px 0 80px;
+            padding: 10px 0 10px;
             background: linear-gradient(180deg, #f3f1ef 0%, #f4e1c7 100%);
-            margin: 20px 0;
         }
 
         .split-reverse {
@@ -302,9 +297,8 @@
         /* ========== 第三部分: 100%宽度，下方全宽区域优势展示 ========= */
         .full-width-section {
             width: 100%;
-            background: linear-gradient(180deg, var(--bg-light-1) 0%, #fefffe 100%);
-            padding: 80px 32px;
-            margin-top: 20px;
+            background: linear-gradient(180deg, var(--bg-light-1) 0%, var(--bg-light-4) 100%);
+            padding: 30px 5px 10px;
         }
 
         .full-inner {
@@ -321,7 +315,7 @@
         }
 
         .core-card {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.25);
             backdrop-filter: blur(4px);
             border-radius: 28px;
             padding: 32px 28px;
@@ -332,7 +326,7 @@
         }
 
         .core-card:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: var(--bg-light-4);
             transform: translateY(-5px);
         }
 
@@ -403,10 +397,6 @@
                 padding: 24px;
             }
 
-            .full-width-section {
-                padding: 60px 24px;
-            }
-
             .core-grid {
                 flex-direction: column;
             }
@@ -431,7 +421,7 @@
                             <img src="assets/images/c1.jpg" alt="玻璃工艺大师工作场景" style="width:100%; height:auto;">
                         </div>
                         <div class="floating-title">
-                            <h2>Eight Years of Excellence</h2>
+                            <h2>Fifteen Years of Excellence</h2>
                             <p>From workshop to the global stage, each glass is a solemn pledge.</p>
                         </div>
                     </div>
@@ -491,7 +481,15 @@
                 </div>
             </div>
         </section>
-
+        <section class="section-factory">
+            <div class="carousel-bg">
+                <div class="carousel-slide active" style="background-image: url('assets/images/Factory24.278.jpg');"></div>
+                <div class="carousel-slide" style="background-image: url('assets/images/Factory52.716.jpg');"></div>
+                <div class="carousel-slide" style="background-image: url('assets/images/Factory50.740.jpg');"></div>
+                <div class="carousel-slide" style="background-image: url('assets/images/Factory01.894.jpg');"></div>
+                <div class="carousel-slide" style="background-image: url('assets/images/Factory17.112.jpg');"></div>
+            </div>
+        </section>
         <!-- ========= 第三部分：100%宽度，底部优势全覆盖区域（全宽） ========= -->
         <section class="full-width-section">
             <div class="full-inner">
@@ -530,6 +528,28 @@
         fetch('footer.html')
             .then(response => response.text())
             .then(data => document.getElementById('footer-placeholder').innerHTML = data);
+    </script>
+    
+    <script>
+        // 只对 section-factory 的背景做轮播
+        // 获取轮播容器内的所有背景项（只作用于 .section-factory 内）
+        const slides = document.querySelectorAll('.carousel-bg .carousel-slide');
+        let currentIndex = 0;
+
+        // 轮播函数
+        function rotateBackground() {
+            // 移除当前激活的类
+            slides[currentIndex].classList.remove('active');
+
+            // 计算下一个索引
+            currentIndex = (currentIndex + 1) % slides.length;
+
+            // 添加激活类到下一张
+            slides[currentIndex].classList.add('active');
+        }
+
+        // 每 5 秒切换一次背景（只有轮播容器中的背景会切换）
+        setInterval(rotateBackground, 5000);
     </script>
 </body>
 

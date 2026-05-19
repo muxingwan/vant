@@ -97,7 +97,7 @@ nav {
 
 /* 排版系统 */
 .section-hero {
-  height: 70vh;
+  padding: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -106,9 +106,6 @@ nav {
   background: var(--gray);
 }
 
-.section-content {
-  padding: 50px 8%;
-}
 
 h1 {
   font-family: ARIAL, CALIBRI;
@@ -140,7 +137,9 @@ h2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 80px;
-  align-items: center;
+  max-width: 80%;        /* 最大宽度为80% */
+  width: 100%;           /* 保证在小屏幕下能正常响应 */
+  margin: 0 auto;        /* 水平居中 */
 }
 
 .grid-4 {
@@ -534,15 +533,17 @@ fieldset {
   align-items: center;
   text-align: center;
   color: white;
-  overflow: hidden;
+  overflow: hidden;  
+  background: linear-gradient(180deg, #f3f1ef 0%, #f4e1c7 100%);
 }
 
 /* 轮播背景容器 */
 .carousel-bg {
   position: absolute;
   top: 0;
-  left: 0;
-  width: 100%;
+  left: 50%;           /* 先定位到50%位置 */
+  transform: translateX(-50%);  /* 向左偏移自身宽度的50%，实现居中 */
+  width: 80%; /* 设置宽度为页面宽度的70% */
   height: 100%;
   z-index: 0;
 }
@@ -624,11 +625,6 @@ fieldset {
   padding: 0 20px;
 }
 
-/* 确保 hero 内容居中 */
-.section-hero {
-  text-align: center;
-  margin-bottom: 40px;
-}
 
 /* 三列布局居中 */
 .flex-row {
