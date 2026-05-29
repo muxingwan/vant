@@ -1,54 +1,1060 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>玻璃制品 | 侧边导航菜单与产品展示</title>
+    <!-- 引入外部样式 (模拟原项目环境) -->
     <link rel="stylesheet" href="bootstrap.min.css">
     <link rel="stylesheet" href="swiper5.css">
     <link rel="stylesheet" href="Corporate-Footer-Clean.css">
     <link rel="stylesheet" href="iconfont.css">
     <link rel="stylesheet" href="other.css">
     <link rel="stylesheet" href="style.css">
-    <title>Products | together</title>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap"
+        rel="stylesheet">
+    <style>
+        /* 整体布局: 侧边栏 + 右侧内容区 (保留原侧边样式) */
+        .app-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ========= 侧边导航栏 (400px宽，与原调整后一致) ========= */
+        .side-leftside {
+            width: 400px;
+            background: #fffef8;
+            border-right: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.02);
+            padding: 2rem 1.5rem;
+            overflow-y: auto;
+            flex-shrink: 0;
+            font-family: 'Inter', sans-serif;
+            position: sticky;
+            top: 0;
+            align-self: start;
+            height: 100vh;
+        }
+
+        .leftside-header {
+            margin-bottom: 2rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--color-71);
+        }
+
+        .leftside-header h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--color-1);
+            letter-spacing: -0.3px;
+        }
+
+        .leftside-header p {
+            font-size: 0.75rem;
+            color: var(--color-text-muted);
+            margin-top: 6px;
+        }
+
+        /* 一级目录样式 - 纯静态，无JS交互（保持展开/收起纯粹由html/css控制，但需求要求一级点击反转二级显隐？不过用户要求静态且用锚链接，我们保留折叠交互但完全通过纯CSS实现，不需要JS，同时可锚点定位） 
+           为了用户体验且不依赖JS，使用checkbox+label或 :target？但最稳妥方式保留css hover? 但要求“一级目录时，就反转二级目录的显隐效果”，最优雅方式利用隐藏checkbox, 实现点击展开/收起。
+           为满足 “不用js就不要用js” 原则，侧边导航的所有点击折叠/展开完全使用纯CSS实现（通过checkbox hack），同时二级菜单作为锚链接链接到右侧对应区域。
+           右侧区域我们提供静态内容块，不同菜单项通过锚点（id）跳转到对应板块。完全符合静态多页概念（虽单页但模拟多页锚点，用户可手动增加其他页面）
+        */
+        /* 纯CSS折叠树实现 */
+        .leftside-tree {
+            list-style: none;
+            padding: 0;
+        }
+
+        .leftside-category {
+            margin-bottom: 0.5rem;
+        }
+
+        /* 隐藏checkbox */
+        .toggle-checkbox {
+            display: none;
+        }
+
+        .category-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 0.75rem;
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--color-text-default);
+            background: var(--bg-light-5);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+            user-select: none;
+        }
+
+        .category-label:hover {
+            background-color: var(--bg-light-7);
+            border-left-color: var(--color-primary);
+            color: var(--color-1);
+        }
+
+        .toggle-icon {
+            font-size: 1.2rem;
+            font-weight: 300;
+            transition: transform 0.25s;
+            color: var(--color-8);
+            display: inline-block;
+        }
+
+        /* 二级菜单列表默认隐藏，利用 checkbox 控制显示 */
+        .sub-menu {
+            list-style: none;
+            padding-left: 1.5rem;
+            margin-top: 0.25rem;
+            margin-bottom: 0.25rem;
+            display: none;
+        }
+
+        .toggle-checkbox:checked~.sub-menu {
+            display: block;
+        }
+
+        .toggle-checkbox:checked+.category-label .toggle-icon {
+            transform: rotate(90deg);
+        }
+
+        .sub-item {
+            padding: 0.45rem 0.75rem;
+            font-size: 1.1rem;
+            color: var(--color-text-muted);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin: 2px 0;
+            font-weight: 500;
+            display: block;
+            text-decoration: none;
+        }
+
+        .sub-item:hover {
+            background: var(--bg-light-4);
+            color: var(--color-2);
+            padding-left: 1rem;
+        }
+
+        /* 针对没有子项的JAR 叶子菜单样式 */
+        .leaf-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.6rem 0.75rem;
+            font-weight: 600;
+            color: #3b3b3b;
+            border-radius: 10px;
+            margin-bottom: 0.25rem;
+            cursor: pointer;
+            background: var(--bg-light-5);
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .leaf-item:hover {
+            background: #f9efe7;
+            color: var(--color-1);
+        }
+
+        /* 右侧主内容区 */
+        .main-content {
+            flex: 1;
+            padding: 2rem 2rem 2rem 2rem;
+            overflow-y: auto;
+            background: #fffdf9;
+        }
+
+        /* 板块样式：每个一级菜单对应一个区域，同时二级锚点滚动定位 */
+        .section-block {
+            margin-bottom: 4rem;
+            scroll-margin-top: 30px;
+            /* 避免固定导航遮挡 */
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            color: var(--color-1);
+            border-left: 5px solid var(--color-primary);
+            padding-left: 20px;
+            margin-bottom: 2rem;
+            margin-top: 0.5rem;
+        }
+
+        .subsection-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin: 1.5rem 0 1rem 0;
+            color: var(--color-2);
+            border-bottom: 2px dashed var(--color-71);
+            display: inline-block;
+            padding-bottom: 4px;
+        }
+
+        /* 一行三列图片网格 (与原始风格完全一致) */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .product-card {
+            background: #fff;
+            border-radius: 24px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05), 0 6px 6px rgba(0, 0, 0, 0.03);
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 35px -12px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .product-card:hover .card-img {
+            transform: scale(1.02);
+        }
+
+        .card-info {
+            padding: 1rem 0.9rem 1.2rem;
+            text-align: center;
+            background: white;
+        }
+
+        .product-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #2c2c2c;
+            margin-bottom: 0.35rem;
+            letter-spacing: -0.2px;
+        }
+
+        .product-desc {
+            font-size: 0.75rem;
+            color: #6c757d;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* 响应式 */
+        @media (max-width: 1200px) {
+            .side-leftside {
+                width: 320px;
+            }
+
+            .product-grid {
+                gap: 1.2rem;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .app-layout {
+                flex-direction: column;
+            }
+
+            .side-leftside {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #eee;
+                padding: 1rem;
+                height: auto;
+                position: relative;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+        }
+
+        .welcome-tag {
+            margin-bottom: 2rem;
+        }
+
+        .welcome-tag h2 {
+            font-size: 1.8rem;
+            font-weight: 500;
+            font-family: 'Playfair Display', serif;
+            color: var(--color-1);
+        }
+
+        .welcome-tag p {
+            color: #5a5a5a;
+            border-left: 3px solid var(--color-primary);
+            padding-left: 12px;
+            margin-top: 8px;
+        }
+
+        hr {
+            margin: 20px 0;
+            border-color: #f0e4d5;
+        }
+
+        /* 侧边滚动条 */
+        .side-leftside::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .side-leftside::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .side-leftside::-webkit-scrollbar-thumb {
+            background: #c1a58b;
+            border-radius: 8px;
+        }
+
+        /* 锚点平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* 其他辅助 */
+        .back-link {
+            font-size: 0.8rem;
+            margin-top: 1rem;
+            display: inline-block;
+            color: var(--color-primary);
+        }
+    </style>
 </head>
 
 <body>
-    
+
+    <!-- 动态加载导航占位符 (保留原项目fetch) -->
     <nav id="nav-placeholder"></nav>
-    <section class="section-content">
-        <h1>Products</h1>
-        <div class="grid-4" style="margin-top:50px;">
-            <div class="card-item">
-                <h3>Bottles</h3>
-                <p>Borosilicate series</p>
+
+    <div class="app-layout">
+        <!-- 左侧静态导航栏：纯CSS折叠 + 锚链接 (无JS) -->
+        <aside class="side-leftside">
+            <div class="leftside-header">
+                <h3>GlassAtlas</h3>
+                <p>Premium Glass · Life with Art</p>
             </div>
-            <div class="card-item">
-                <h3>Drinkware</h3>
-                <p>Heat resistant</p>
+            <ul class="leftside-tree">
+                <!-- DECORATION 一级菜单，包含二级candle, vase -->
+                <li class="leftside-category">
+                    <input type="checkbox" id="toggleDecoration" class="toggle-checkbox">
+                    <label for="toggleDecoration" class="category-label">
+                        <span>DECORATION</span>
+                        <span class="toggle-icon">▶</span>
+                    </label>
+                    <ul class="sub-menu">
+                        <li><a class="sub-item" href="#decoration-candle">🕯️ candle</a></li>
+                        <li><a class="sub-item" href="#decoration-vase">🏺 vase</a></li>
+                    </ul>
+                </li>
+                <!-- DRINKWARE -->
+                <li class="leftside-category">
+                    <input type="checkbox" id="toggleDrinkware" class="toggle-checkbox">
+                    <label for="toggleDrinkware" class="category-label">
+                        <span>DRINKWARE</span>
+                        <span class="toggle-icon">▶</span>
+                    </label>
+                    <ul class="sub-menu">
+                        <li><a class="sub-item" href="#drinkware-bottle">🍾 bottle</a></li>
+                        <li><a class="sub-item" href="#drinkware-cup">🥛 cup</a></li>
+                    </ul>
+                </li>
+                <!-- GIFT AND SOUVENIR GLASS -->
+                <li class="leftside-category">
+                    <input type="checkbox" id="toggleGift" class="toggle-checkbox">
+                    <label for="toggleGift" class="category-label">
+                        <span>GIFT AND SOUVENIR GLASS</span>
+                        <span class="toggle-icon">▶</span>
+                    </label>
+                    <ul class="sub-menu">
+                        <li><a class="sub-item" href="#gift-holiday">🎄 holiday</a></li>
+                        <li><a class="sub-item" href="#gift-tourism">✈️ tourism</a></li>
+                    </ul>
+                </li>
+                <!-- JAR (无二级) 作为叶子菜单 -->
+                <li class="leftside-category">
+                    <a class="leaf-item" href="#jar-section">JAR 🏺</a>
+                </li>
+                <!-- KITCHEN SUPPLIES -->
+                <li class="leftside-category">
+                    <input type="checkbox" id="toggleKitchen" class="toggle-checkbox">
+                    <label for="toggleKitchen" class="category-label">
+                        <span>KITCHEN SUPPLIES</span>
+                        <span class="toggle-icon">▶</span>
+                    </label>
+                    <ul class="sub-menu">
+                        <li><a class="sub-item" href="#kitchen-bake">🍪 bake</a></li>
+                        <li><a class="sub-item" href="#kitchen-bowl">🥣 bowl</a></li>
+                        <li><a class="sub-item" href="#kitchen-coffeepot">☕ coffee pot</a></li>
+                        <li><a class="sub-item" href="#kitchen-plate">🍽️ plate</a></li>
+                        <li><a class="sub-item" href="#kitchen-souppot">🍲 soup pot</a></li>
+                        <li><a class="sub-item" href="#kitchen-spicebottle">🧂 spice bottle</a></li>
+                        <li><a class="sub-item" href="#kitchen-storage">📦 storage</a></li>
+                    </ul>
+                </li>
+                <!-- WINE -->
+                <li class="leftside-category">
+                    <input type="checkbox" id="toggleWine" class="toggle-checkbox">
+                    <label for="toggleWine" class="category-label">
+                        <span>WINE</span>
+                        <span class="toggle-icon">▶</span>
+                    </label>
+                    <ul class="sub-menu">
+                        <li><a class="sub-item" href="#wine-beer">🍺 beer</a></li>
+                        <li><a class="sub-item" href="#wine-decanter">🍷 decanter</a></li>
+                        <li><a class="sub-item" href="#wine-goblet">🥂 goblet</a></li>
+                        <li><a class="sub-item" href="#wine-shot">🥃 shot</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- 右侧静态内容区：包含所有一级菜单对应的板块及二级锚点目标，完全静态，用户可后期增加页面 -->
+        <main class="main-content">
+            <!-- ========= DECORATION 板块 ========= -->
+            <div id="decoration" class="section-block">
+                <h2 class="section-title">DECORATION</h2>
+                <!-- candle 锚点 -->
+                <div id="decoration-candle">
+                    <h3 class="subsection-title">🕯️ Candle </h3>
+                    <div class="product-grid">
+                        <div class="product-card">
+                            <img class="card-img" src="assets\productsPhoto\DECORATION\candle\3cf806a23c586caf8e61d5182b223b82.png" alt="经典烛台">
+                            <div class="card-info">
+                                <div class="product-name">经典手工烛台</div>
+                                <div class="product-desc">琥珀色玻璃，暖光摇曳</div>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <img class="card-img" src="assets\productsPhoto\DECORATION\candle\8adb0205848d37d98a51b083869f005f.png" alt="磨砂烛台">
+                            <div class="card-info">
+                                <div class="product-name">磨砂质感烛台</div>
+                                <div class="product-desc">雾面触感，静谧光影</div>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <img class="card-img" src="assets\productsPhoto\DECORATION\candle\be1028e2c34548fa70f50b9735e74cd3.png" alt="艺术烛台">
+                            <div class="card-info">
+                                <div class="product-name">艺术雕刻烛台</div>
+                                <div class="product-desc">匠心雕刻，限量发售</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="decoration-vase">
+                    <h3 class="subsection-title">🏺 Vase</h3>
+                    <div class="product-grid">
+                        <div class="product-card">
+                            <img class="card-img" src="assets\productsPhoto\DECORATION\vase\3e4b040d32cc25f2f25c1252652a5f71.png" alt="现代花瓶">
+                            <div class="card-info">
+                                <div class="product-name">涟漪花瓶</div>
+                                <div class="product-desc">纯净通透，现代家居</div>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <img class="card-img" src="assets\productsPhoto\DECORATION\vase\97e6474a45f3264bf0cfaf67f592446c.png" alt="复古花瓶">
+                            <div class="card-info">
+                                <div class="product-name">复古手工花瓶</div>
+                                <div class="product-desc">经典轮廓，艺术格调</div>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <img class="card-img" src="assets\productsPhoto\DECORATION\vase\c5d2aa26a5f10f30c5943e3326194614.png" alt="极简花瓶">
+                            <div class="card-info">
+                                <div class="product-name">极简玻璃花器</div>
+                                <div class="product-desc">简约线条，绿植伴侣</div>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <img class="card-img" src="assets\productsPhoto\DECORATION\vase\eba22f076421cf2c1e884264acb988f4.png" alt="极简花瓶">
+                            <div class="card-info">
+                                <div class="product-name">极简玻璃花器</div>
+                                <div class="product-desc">简约线条，绿植伴侣</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="card-item">
-                <h3>Jars</h3>
-                <p>Airtight storage</p>
+
+            <!-- ========= DRINKWARE 板块 ========= -->
+            <div id="drinkware" class="section-block">
+                <h2 class="section-title">DRINKWARE</h2>
+                <div id="drinkware-bottle">
+                    <h3 class="subsection-title">🍾 Bottle</h3>
+                    <div class="product-grid">
+                        <div class="product-card"><img class="card-img" src="assets\productsPhoto\DRINKWARE\bottle\bottle1.png" alt="bottle">
+                            <div class="card-info">
+                                <div class="product-name">极简水瓶</div>
+                                <div class="product-desc">环保材质，便携设计</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img" src="assets\productsPhoto\DRINKWARE\bottle\bottle2.png" alt="bottle2">
+                            <div class="card-info">
+                                <div class="product-name">气泡水瓶</div>
+                                <div class="product-desc">带过滤口感升级</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img" src="assets\productsPhoto\DRINKWARE\bottle\bottle3.png" alt="bottle3">
+                            <div class="card-info">
+                                <div class="product-name">商务直身瓶</div>
+                                <div class="product-desc">高硼硅耐热</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img" src="assets\productsPhoto\DRINKWARE\bottle\bottle4.png" alt="bottle3">
+                            <div class="card-info">
+                                <div class="product-name">商务直身瓶</div>
+                                <div class="product-desc">高硼硅耐热</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="drinkware-cup">
+                    <h3 class="subsection-title">🥛 Cup</h3>
+                    <div class="product-grid">
+                        <div class="product-card"><img class="card-img" src="assets\productsPhoto\DRINKWARE\cup\cup.png" alt="cup1">
+                            <div class="card-info">
+                                <div class="product-name">北欧水杯</div>
+                                <div class="product-desc">晶莹透亮，隔热防烫</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img" src="assets\productsPhoto\DRINKWARE\cup\cup1.png" alt="cup2">
+                            <div class="card-info">
+                                <div class="product-name">双层玻璃杯</div>
+                                <div class="product-desc">保冷保温，创意设计</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img" src="assets\productsPhoto\DRINKWARE\cup\cup3.png" alt="cup3">
+                            <div class="card-info">
+                                <div class="product-name">日式锤纹杯</div>
+                                <div class="product-desc">手工锤纹，光影流转</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img" src="assets\productsPhoto\DRINKWARE\cup\cup4.png" alt="cup3">
+                            <div class="card-info">
+                                <div class="product-name">日式锤纹杯</div>
+                                <div class="product-desc">手工锤纹，光影流转</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img" src="assets\productsPhoto\DRINKWARE\cup\cup5.png" alt="cup3">
+                            <div class="card-info">
+                                <div class="product-name">日式锤纹杯</div>
+                                <div class="product-desc">手工锤纹，光影流转</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="card-item">
-                <h3>Molds</h3>
-                <p>ODM Support</p>
-                <a href="contact.html">Inquire</a>
+
+            <!-- GIFT AND SOUVENIR 板块 -->
+            <div id="gift" class="section-block">
+                <h2 class="section-title">GIFT & SOUVENIR</h2>
+                <div id="gift-holiday">
+                    <h3 class="subsection-title">🎄 Holiday</h3>
+                    <div class="product-grid">
+                        <div class="product-card"><img class="card-img" src="assets\productsPhoto\GIFT AND SOUVENIR GLASS\holiday\holiday.png" alt="holiday">
+                            <div class="card-info">
+                                <div class="product-name">圣诞彩球挂饰</div>
+                                <div class="product-desc">流光溢彩，节日氛围</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img" src="assets\productsPhoto\GIFT AND SOUVENIR GLASS\holiday\holiday2.png" alt="holiday2">
+                            <div class="card-info">
+                                <div class="product-name">新年限定礼盒</div>
+                                <div class="product-desc">手工吹制，限量编号</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img" src="assets\productsPhoto\GIFT AND SOUVENIR GLASS\holiday\holiday3.png" alt="holiday3">
+                            <div class="card-info">
+                                <div class="product-name">情人节心形摆件</div>
+                                <div class="product-desc">浪漫赠礼</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img" src="assets\productsPhoto\GIFT AND SOUVENIR GLASS\holiday\holiday4.png" alt="holiday3">
+                            <div class="card-info">
+                                <div class="product-name">情人节心形摆件</div>
+                                <div class="product-desc">浪漫赠礼</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img" src="assets\productsPhoto\GIFT AND SOUVENIR GLASS\holiday\holiday5.png" alt="holiday3">
+                            <div class="card-info">
+                                <div class="product-name">情人节心形摆件</div>
+                                <div class="product-desc">浪漫赠礼</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img" src="assets\productsPhoto\GIFT AND SOUVENIR GLASS\holiday\holiday6.png" alt="holiday3">
+                            <div class="card-info">
+                                <div class="product-name">情人节心形摆件</div>
+                                <div class="product-desc">浪漫赠礼</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="gift-tourism">
+                    <h3 class="subsection-title">✈️ Tourism</h3>
+                    <div class="product-grid">
+                        <div class="product-card"><img class="card-img" src="assets\productsPhoto\GIFT AND SOUVENIR GLASS\tourism\tourism.png" alt="tourism">
+                            <div class="card-info">
+                                <div class="product-name">地标微缩摆件</div>
+                                <div class="product-desc">城市印象，玻璃艺术</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </section>
+
+            <!-- JAR 板块（叶子） -->
+            <div id="jar-section" class="section-block">
+                <h2 class="section-title">JAR</h2>
+                <div class="product-grid">
+                    <div class="product-card"><img class="card-img" src="assets\productsPhoto\JAR\7f1c80a02a2df069d2de1ea096302b19.png" alt="jar1">
+                        <div class="card-info">
+                            <div class="product-name">方形密封罐</div>
+                            <div class="product-desc">厨房收纳，防潮保鲜</div>
+                        </div>
+                    </div>
+                    <div class="product-card"><img class="card-img" src="assets\productsPhoto\JAR\9a3172ad108dea25de378924b5fef6bd.png" alt="jar2">
+                        <div class="card-info">
+                            <div class="product-name">复古糖果罐</div>
+                            <div class="product-desc">家居装饰，储物两用</div>
+                        </div>
+                    </div>
+                    <div class="product-card"><img class="card-img" src="assets\productsPhoto\JAR\cecd205dc54c2d3320575c61cba7b2f1.png" alt="jar3">
+                        <div class="card-info">
+                            <div class="product-name">超大号储物罐</div>
+                            <div class="product-desc">密封硅胶圈，容量升级</div>
+                        </div>
+                    </div>
+                    <div class="product-card"><img class="card-img" src="assets\productsPhoto\JAR\e6b273a5fb2a5d2df74eace40e3fa5b8.png" alt="jar3">
+                        <div class="card-info">
+                            <div class="product-name">超大号储物罐</div>
+                            <div class="product-desc">密封硅胶圈，容量升级</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KITCHEN SUPPLIES 板块 -->
+            <div id="kitchen" class="section-block">
+                <h2 class="section-title">KITCHEN SUPPLIES</h2>
+                <div id="kitchen-bake">
+                    <h3 class="subsection-title">🍪 Bake</h3>
+                    <div class="product-grid">
+                        <div class="product-card"><img class="card-img" src="assets\productsPhoto\KITCHEN SUPPLIES\bake\bake1.png" alt="bake">
+                            <div class="card-info">
+                                <div class="product-name">耐热玻璃烤盘</div>
+                                <div class="product-desc">易清洗，耐高温</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img" src="assets\productsPhoto\KITCHEN SUPPLIES\bake\bake2.png" alt="bake2">
+                            <div class="card-info">
+                                <div class="product-name">长方形深烤碗</div>
+                                <div class="product-desc">烘焙甜品必备</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img" src="assets\productsPhoto\KITCHEN SUPPLIES\bake\bake3.png" alt="bake3">
+                            <div class="card-info">
+                                <div class="product-name">圆形派盘</div>
+                                <div class="product-desc">均匀受热</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img" src="assets\productsPhoto\KITCHEN SUPPLIES\bake\bake4.png" alt="bake3">
+                            <div class="card-info">
+                                <div class="product-name">圆形派盘</div>
+                                <div class="product-desc">均匀受热</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img" src="assets\productsPhoto\KITCHEN SUPPLIES\bake\bake5.png" alt="bake3">
+                            <div class="card-info">
+                                <div class="product-name">圆形派盘</div>
+                                <div class="product-desc">均匀受热</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="kitchen-bowl">
+                    <h3 class="subsection-title">🥣 Bowl</h3>
+                    <div class="product-grid">
+                        <div class="product-card"><img class="card-img" src="assets\productsPhoto\KITCHEN SUPPLIES\bowl\bowl1.png" alt="bowl">
+                            <div class="card-info">
+                                <div class="product-name">沙拉碗套装</div>
+                                <div class="product-desc">晶莹剔透，轻便耐用</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img" src="assets\productsPhoto\KITCHEN SUPPLIES\bowl\bowl2.png" alt="bowl2">
+                            <div class="card-info">
+                                <div class="product-name">调味碗</div>
+                                <div class="product-desc">多规格组合</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img" src="assets\productsPhoto\KITCHEN SUPPLIES\bowl\bowl3.png" alt="bowl3">
+                            <div class="card-info">
+                                <div class="product-name">创意拉面碗</div>
+                                <div class="product-desc">防烫设计</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img" src="assets\productsPhoto\KITCHEN SUPPLIES\bowl\bowl4.png" alt="bowl3">
+                            <div class="card-info">
+                                <div class="product-name">创意拉面碗</div>
+                                <div class="product-desc">防烫设计</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="kitchen-coffeepot">
+                    <h3 class="subsection-title">☕ Coffee pot</h3>
+                    <div class="product-grid">
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\KITCHEN SUPPLIES\coffee pot\coffee1.png"
+                                alt="coffee">
+                            <div class="card-info">
+                                <div class="product-name">手冲玻璃咖啡壶</div>
+                                <div class="product-desc">滤杯一体，醇香体验</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\KITCHEN SUPPLIES\coffee pot\coffee2.png"
+                                alt="coffee2">
+                            <div class="card-info">
+                                <div class="product-name">法压壶</div>
+                                <div class="product-desc">304不锈钢滤网</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\KITCHEN SUPPLIES\coffee pot\coffee3.png"
+                                alt="coffee3">
+                            <div class="card-info">
+                                <div class="product-name">云朵分享壶</div>
+                                <div class="product-desc">高硼硅耐热</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="kitchen-plate">
+                    <h3 class="subsection-title">🍽️ Plate</h3>
+                    <div class="product-grid">
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\KITCHEN SUPPLIES\plate\plate1.png"
+                                alt="plate">
+                            <div class="card-info">
+                                <div class="product-name">平盘套装</div>
+                                <div class="product-desc">现代简约</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\KITCHEN SUPPLIES\plate\plate2.png"
+                                alt="plate2">
+                            <div class="card-info">
+                                <div class="product-name">深口分餐盘</div>
+                                <div class="product-desc">多用餐盘</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="kitchen-souppot">
+                    <h3 class="subsection-title">🍲 Soup pot</h3>
+                    <div class="product-grid">
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\KITCHEN SUPPLIES\soup pot\pot.png"
+                                alt="soup">
+                            <div class="card-info">
+                                <div class="product-name">玻璃炖锅</div>
+                                <div class="product-desc">透明可视，锁鲜原味</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\KITCHEN SUPPLIES\soup pot\pot2.png"
+                                alt="soup2">
+                            <div class="card-info">
+                                <div class="product-name">双耳汤锅</div>
+                                <div class="product-desc">电磁炉通用</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\KITCHEN SUPPLIES\soup pot\pot3.png"
+                                alt="soup3">
+                            <div class="card-info">
+                                <div class="product-name">康宁风格锅</div>
+                                <div class="product-desc">耐骤冷骤热</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\KITCHEN SUPPLIES\soup pot\pot4.png"
+                                alt="soup3">
+                            <div class="card-info">
+                                <div class="product-name">康宁风格锅</div>
+                                <div class="product-desc">耐骤冷骤热</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\KITCHEN SUPPLIES\soup pot\pot5.png"
+                                alt="soup3">
+                            <div class="card-info">
+                                <div class="product-name">康宁风格锅</div>
+                                <div class="product-desc">耐骤冷骤热</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="kitchen-spicebottle">
+                    <h3 class="subsection-title">🧂 Spice bottle</h3>
+                    <div class="product-grid">
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\KITCHEN SUPPLIES\spice bottle\62b2bf06d87653163f8a09d3803dc64f.png"
+                                alt="spice">
+                            <div class="card-info">
+                                <div class="product-name">调味瓶套装</div>
+                                <div class="product-desc">密封防潮，标签可写</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\KITCHEN SUPPLIES\spice bottle\8853ad0f1551d27d5c7e20841e07bd8d.png"
+                                alt="spice2">
+                            <div class="card-info">
+                                <div class="product-name">研磨一体瓶</div>
+                                <div class="product-desc">陶瓷研磨芯</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\KITCHEN SUPPLIES\spice bottle\992c76d9c827159f2a471e3b6705e3ca.png"
+                                alt="spice3">
+                            <div class="card-info">
+                                <div class="product-name">油醋瓶套装</div>
+                                <div class="product-desc">倒液不挂壁</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\KITCHEN SUPPLIES\spice bottle\992c76d9c827159f2a471e3b6705e3ca.png"
+                                alt="spice3">
+                            <div class="card-info">
+                                <div class="product-name">油醋瓶套装</div>
+                                <div class="product-desc">倒液不挂壁</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\KITCHEN SUPPLIES\spice bottle\a086a249aded9ccbd345cd41dfc8d41e.png"
+                                alt="spice3">
+                            <div class="card-info">
+                                <div class="product-name">油醋瓶套装</div>
+                                <div class="product-desc">倒液不挂壁</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\KITCHEN SUPPLIES\spice bottle\d8b58da28049972951ffdf3689182ea6.png"
+                                alt="spice3">
+                            <div class="card-info">
+                                <div class="product-name">油醋瓶套装</div>
+                                <div class="product-desc">倒液不挂壁</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\KITCHEN SUPPLIES\spice bottle\ef8bc33658d05901dce5e1cde5b703ae.png"
+                                alt="spice3">
+                            <div class="card-info">
+                                <div class="product-name">油醋瓶套装</div>
+                                <div class="product-desc">倒液不挂壁</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\KITCHEN SUPPLIES\spice bottle\fdf51c4abce1217198c41fbea83f4486.png"
+                                alt="spice3">
+                            <div class="card-info">
+                                <div class="product-name">油醋瓶套装</div>
+                                <div class="product-desc">倒液不挂壁</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="kitchen-storage">
+                    <h3 class="subsection-title">📦 Storage</h3>
+                    <div class="product-grid">
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\KITCHEN SUPPLIES\storage\storage1.png"
+                                alt="storage">
+                            <div class="card-info">
+                                <div class="product-name">方形储物罐</div>
+                                <div class="product-desc">叠加收纳，节省空间</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\KITCHEN SUPPLIES\storage\storage2.png"
+                                alt="storage2">
+                            <div class="card-info">
+                                <div class="product-name">密封粮食桶</div>
+                                <div class="product-desc">大容量透明</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\KITCHEN SUPPLIES\storage\storage3.png"
+                                alt="storage3">
+                            <div class="card-info">
+                                <div class="product-name">茶叶罐</div>
+                                <div class="product-desc">遮光防潮</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\KITCHEN SUPPLIES\storage\storage4.png"
+                                alt="storage3">
+                            <div class="card-info">
+                                <div class="product-name">茶叶罐</div>
+                                <div class="product-desc">遮光防潮</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\KITCHEN SUPPLIES\storage\storage5.png"
+                                alt="storage3">
+                            <div class="card-info">
+                                <div class="product-name">茶叶罐</div>
+                                <div class="product-desc">遮光防潮</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- WINE 板块 -->
+            <div id="wine" class="section-block">
+                <h2 class="section-title">WINE</h2>
+                <div id="wine-beer">
+                    <h3 class="subsection-title">🍺 Beer</h3>
+                    <div class="product-grid">
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\WINE\beer\beer1.png"
+                                alt="beer">
+                            <div class="card-info">
+                                <div class="product-name">精酿小麦杯</div>
+                                <div class="product-desc">泡沫丰富，握感舒适</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\WINE\beer\beer2.png"
+                                alt="beer2">
+                            <div class="card-info">
+                                <div class="product-name">扎啤杯</div>
+                                <div class="product-desc">厚实底座</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\WINE\beer\beer3.png"
+                                alt="beer3">
+                            <div class="card-info">
+                                <div class="product-name">品脱杯套装</div>
+                                <div class="product-desc">家用派对</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\WINE\beer\beer4.png"
+                                alt="beer3">
+                            <div class="card-info">
+                                <div class="product-name">品脱杯套装</div>
+                                <div class="product-desc">家用派对</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="wine-decanter">
+                    <h3 class="subsection-title">🍷 Decanter</h3>
+                    <div class="product-grid">
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\WINE\decanter\decanter1.png"
+                                alt="decanter">
+                            <div class="card-info">
+                                <div class="product-name">天鹅颈醒酒器</div>
+                                <div class="product-desc">快速醒酒，优雅倾倒</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\WINE\decanter\decanter2.png"
+                                alt="decanter2">
+                            <div class="card-info">
+                                <div class="product-name">宽底醒酒瓶</div>
+                                <div class="product-desc">增大氧化面积</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="wine-goblet">
+                    <h3 class="subsection-title">🥂 Goblet</h3>
+                    <div class="product-grid">
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\WINE\goblet\goblet.png"
+                                alt="goblet">
+                            <div class="card-info">
+                                <div class="product-name">水晶红酒杯</div>
+                                <div class="product-desc">轻薄杯壁，聚香设计</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\WINE\goblet\goblet2.png"
+                                alt="goblet2">
+                            <div class="card-info">
+                                <div class="product-name">香槟笛形杯</div>
+                                <div class="product-desc">气泡细腻上升</div>
+                            </div>
+                        </div>
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\WINE\goblet\goblet3.png"
+                                alt="goblet3">
+                            <div class="card-info">
+                                <div class="product-name">白葡萄酒杯</div>
+                                <div class="product-desc">优雅品鉴</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="wine-shot">
+                    <h3 class="subsection-title">🥃 Shot</h3>
+                    <div class="product-grid">
+                        <div class="product-card"><img class="card-img"
+                                src="assets\productsPhoto\WINE\shot\shot.png"
+                                alt="shot">
+                            <div class="card-info">
+                                <div class="product-name">一口杯套装</div>
+                                <div class="product-desc">厚底稳重，派对必备</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="height: 2rem;"></div>
+        </main>
+    </div>
+
+    <!-- 页脚占位符 -->
     <div id="footer-placeholder"></div>
 
+    <!-- 保留原有JS加载导航和页脚 (完全保留用户要求) -->
     <script>
         // 加载导航
         fetch('nav.html')
             .then(response => response.text())
-            .then(data => document.getElementById('nav-placeholder').innerHTML = data);
+            .then(data => document.getElementById('nav-placeholder').innerHTML = data)
+            .catch(err => console.warn("nav.html加载失败，请确保文件存在", err));
 
         // 加载页脚
         fetch('footer.html')
             .then(response => response.text())
-            .then(data => document.getElementById('footer-placeholder').innerHTML = data);
+            .then(data => document.getElementById('footer-placeholder').innerHTML = data)
+            .catch(err => console.warn("footer.html加载失败，请确保文件存在", err));
     </script>
 </body>
 
